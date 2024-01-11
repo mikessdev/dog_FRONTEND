@@ -49,6 +49,7 @@ const reloadPageContent = (number: number) => {
 .home-view {
   display: flex;
   flex-direction: column;
+  margin-bottom: 100px;
 }
 .home-title {
   text-align: center;
@@ -61,6 +62,7 @@ const reloadPageContent = (number: number) => {
   display: flex;
   width: 100%;
   justify-content: center;
+  margin-bottom: 40px;
 }
 .list-of-breed {
   display: flex;

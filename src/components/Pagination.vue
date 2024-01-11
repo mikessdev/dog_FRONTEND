@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import usePagination from "@/composables/usePagination";
 
 const props = defineProps({
   pageAmount: {
@@ -10,29 +11,31 @@ const props = defineProps({
 
 const emit = defineEmits(["click"]);
 
-const currentPage = ref<number>(1);
+// const currentPage = ref<number>(1);
 const firstPage = 1;
 
 const onClick = (number: number) => {
-  currentPage.value = number;
+  usePagination.setCurrentPage(number);
   emit("click", number);
 };
 
 const nextPage = () => {
-  currentPage.value = currentPage.value + 1;
-  emit("click", currentPage.value);
+  const nextPage = usePagination.getCurrentPage() + 1;
+  usePagination.setCurrentPage(nextPage);
+  emit("click", usePagination.getCurrentPage());
 };
 
 const previousPage = () => {
-  currentPage.value = currentPage.value - 1;
-  emit("click", currentPage.value);
+  const previusPage = usePagination.getCurrentPage() - 1;
+  usePagination.setCurrentPage(previusPage);
+  emit("click", usePagination.getCurrentPage());
 };
 </script>
 <template>
   <nav class="pagination-container">
     <ul class="pagination">
       <li
-        v-show="currentPage != firstPage"
+        v-show="usePagination.getCurrentPage() != firstPage"
         class="pagination-before"
         @click="previousPage()"
       >
@@ -40,7 +43,9 @@ const previousPage = () => {
       </li>
       <li
         :class="[
-          number === currentPage ? 'current-pagination' : 'pagination-number',
+          number === usePagination.getCurrentPage()
+            ? 'current-pagination'
+            : 'pagination-number',
         ]"
         v-for="(number, index) in pageAmount"
         :key="index"
@@ -49,7 +54,7 @@ const previousPage = () => {
         <a class="page-link">{{ number }}</a>
       </li>
       <li
-        v-show="currentPage != pageAmount"
+        v-show="usePagination.getCurrentPage() != pageAmount"
         class="pagination-next"
         @click="nextPage()"
       >
