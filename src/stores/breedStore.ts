@@ -3,8 +3,13 @@ import { defineStore } from "pinia";
 
 const URL: string = "https://dog.ceo/api/breed";
 
+export interface Breed {
+  name: string;
+  subBreed?: string[];
+}
+
 export const useBreedStore = defineStore("breed", () => {
-  const listOFBreeds = ref<String[]>([]);
+  const listOFBreeds = ref<Breed[]>([]);
 
   const getAllBreeds = async () => {
     try {
@@ -23,16 +28,6 @@ export const useBreedStore = defineStore("breed", () => {
     }
   };
 
-  const convertObjectToList = (object: object) => {
-    const list: String[] = [];
-
-    for (let atribute in object) {
-      list.push(atribute);
-    }
-
-    return list as String[];
-  };
-
   const getImageBybreed = async (breed: string) => {
     try {
       const response = await fetch(URL + "/" + breed + "/images/random");
@@ -43,5 +38,14 @@ export const useBreedStore = defineStore("breed", () => {
       }
     } catch (error) {}
   };
+
+  const convertObjectToList = (object: object) => {
+    const list: Breed[] = Object.keys(object).map((key) => {
+      return { name: key, subBreed: object[key] } as Breed;
+    });
+
+    return list;
+  };
+
   return { listOFBreeds, getAllBreeds, getImageBybreed };
 });

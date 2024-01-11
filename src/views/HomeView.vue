@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import { useBreedStore } from "@/stores/breedStore";
+import { useBreedStore, type Breed } from "@/stores/breedStore";
 import { ref, onMounted } from "vue";
 import Pagination from "@/components/Pagination.vue";
+import Table from "@/components/Table.vue";
 
 const numberItemsByPage = 10;
 
 const breedStore = useBreedStore();
 
-const listOnDisplay = ref<String[]>([]);
+const listOnDisplay = ref<Breed[]>([]);
 const pageLength = ref<number>(0);
 
 onMounted(async () => {
   await breedStore.getAllBreeds();
-  listOnDisplay.value = breedStore.listOFBreeds.slice(0, numberItemsByPage);
+  listOnDisplay.value = breedStore.listOFBreeds.slice(
+    0,
+    numberItemsByPage
+  ) as unknown as Breed[];
   setupPagination();
 });
 
@@ -25,7 +29,10 @@ const setupPagination = () => {
 const reloadPageContent = (number: number) => {
   const last = numberItemsByPage * number;
   const first = last - numberItemsByPage;
-  listOnDisplay.value = breedStore.listOFBreeds.slice(first, last);
+  listOnDisplay.value = breedStore.listOFBreeds.slice(
+    first,
+    last
+  ) as unknown as Breed[];
 };
 </script>
 
@@ -40,30 +47,7 @@ const reloadPageContent = (number: number) => {
         </div>
       </router-link>
     </div>
-
-    <table class="table-breed">
-      <thead class="">
-        <tr>
-          <th>Raça</th>
-          <th>Sub Raças</th>
-          <th>Cor</th>
-          <th>Tamanho</th>
-          <th>Apelido</th>
-          <th>Idade</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(breed, index) in listOnDisplay" :key="index">
-          <td class="apply-border">{{ breed }}</td>
-          <td>{{ breed }}</td>
-          <td>{{ "" }}</td>
-          <td>{{ "" }}</td>
-          <td>{{ "" }}</td>
-          <td>{{ "" }}</td>
-        </tr>
-      </tbody>
-    </table>
-
+    <Table :list="listOnDisplay" />
     <Pagination @click="(e) => reloadPageContent(e)" :pageAmount="pageLength" />
   </main>
 </template>
@@ -96,49 +80,5 @@ const reloadPageContent = (number: number) => {
   font-size: 20px;
   cursor: pointer;
   color: #31394d;
-}
-
-.table-breed {
-  margin: 0 auto;
-  width: 90%;
-}
-.table-breed thead {
-  background-color: #31394d;
-  color: #e2e3ea;
-  padding: 10px;
-}
-
-.table-breed thead tr th {
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.table-breed tbody tr {
-  transition: transform 0.2s;
-  background-color: rgb(189, 189, 189);
-}
-
-.table-breed tbody tr:hover {
-  transform: scale(1.05);
-  background-color: rgb(112, 112, 112);
-  color: white;
-}
-.table-breed td {
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.list-of-breed-container {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  margin-bottom: 40px;
-}
-.list-of-breed {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-  max-width: 1200px;
 }
 </style>
