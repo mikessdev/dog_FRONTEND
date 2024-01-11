@@ -77,6 +77,14 @@ const previousPage = () => {
   user-select: none;
 }
 
+.pagination-next:active {
+  color: #31394d;
+}
+
+.pagination-before:active {
+  color: #31394d;
+}
+
 .current-pagination {
   color: #31394d;
   cursor: pointer;
