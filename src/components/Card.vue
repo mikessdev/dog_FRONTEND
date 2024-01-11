@@ -22,6 +22,12 @@ const props = defineProps({
     />
     <div class="breed-info">
       <span class="breed-title"> {{ breed }}</span>
+      <ul class="sub-breed-container" v-if="subBreed.length">
+        <span>sub-breed: </span>
+        <li v-for="(breed, index) in subBreed" :key="index">
+          <span>{{ breed }}</span>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -36,18 +42,25 @@ const props = defineProps({
   align-items: center;
   justify-content: center;
   border-radius: 8px;
+  transition: transform 0.2s;
 
   box-shadow:
     rgba(0, 0, 0, 0.19) 0px 10px 20px,
     rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
+.card-container:hover {
+  transform: scale(1.1);
+  background-color: #e2e3ea;
+  color: #31394d;
+}
 .breed-image {
   border-radius: 8px 8px 0px 0px;
 }
 
 .breed-info {
   display: flex;
+  flex-direction: column;
 }
 .breed-title {
   font-size: 20px;
