@@ -10,7 +10,14 @@ export const useBreedStore = defineStore("breed", () => {
     try {
       const response = await fetch(URL + "s" + "/list/all");
       const object = await response.json();
-      listOFBreeds.value = convertObjectToList(object["message"]);
+
+      const succes = object["status"] === "success";
+
+      if (succes) {
+        return (listOFBreeds.value = convertObjectToList(object["message"]));
+      }
+
+      return (listOFBreeds.value = []);
     } catch (error) {
       console.error(error);
     }
@@ -30,7 +37,10 @@ export const useBreedStore = defineStore("breed", () => {
     try {
       const response = await fetch(URL + "/" + breed + "/images/random");
       const object = await response.json();
-      return object["message"];
+      const succes = object["status"] === "success";
+      if (succes) {
+        return object["message"];
+      }
     } catch (error) {}
   };
   return { listOFBreeds, getAllBreeds, getImageBybreed };
