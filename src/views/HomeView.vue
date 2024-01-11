@@ -32,7 +32,13 @@ const reloadPageContent = (number: number) => {
 
 <template>
   <main class="home-view">
-    <h1 class="home-title">Dog API</h1>
+    <div class="home-header">
+      <h1 class="home-title">Dog API</h1>
+      <div class="home-car">
+        <spa>Carrinho</spa>
+        <img src="../assets/doguinho.png" width="80" />
+      </div>
+    </div>
     <div class="list-of-breed-container">
       <ul class="list-of-breed">
         <li class="breed" v-for="(breed, index) in listOnDisplay" :key="index">
@@ -51,11 +57,27 @@ const reloadPageContent = (number: number) => {
   flex-direction: column;
   margin-bottom: 100px;
 }
+
+.home-header {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
 .home-title {
   text-align: center;
   font-size: 40px;
   font-weight: 600;
-  margin: 40px;
+}
+
+.home-car {
+  display: flex;
+  align-items: center;
+  flex-direction: column-reverse;
+  font-weight: 600;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .list-of-breed-container {

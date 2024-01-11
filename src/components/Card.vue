@@ -15,7 +15,7 @@ const props = defineProps({
   <div class="card-container">
     <img
       class="breed-image"
-      src="https://images.dog.ceo/breeds/bouvier/PXL_20220130_185250212.jpg"
+      src="../assets/404_doguinho_not_found.png"
       :alt="breed + 'image'"
       width="300"
       height="200"
