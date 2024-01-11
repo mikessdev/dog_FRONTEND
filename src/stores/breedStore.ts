@@ -1,20 +1,16 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
-const URL: string = "https://dog.ceo/api/breeds/list/all";
-
-interface breedResponse {
-  message: Object;
-}
+const URL: string = "https://dog.ceo/api/breed";
 
 export const useBreedStore = defineStore("breed", () => {
   const listOFBreeds = ref<String[]>([]);
 
   const getAllBreeds = async () => {
     try {
-      const response = await fetch(URL);
-      const obj = (await response.json()) as breedResponse;
-      listOFBreeds.value = convertObjectToList(obj.message);
+      const response = await fetch(URL + "s" + "/list/all");
+      const object = await response.json();
+      listOFBreeds.value = convertObjectToList(object["message"]);
     } catch (error) {
       console.error(error);
     }
@@ -30,5 +26,12 @@ export const useBreedStore = defineStore("breed", () => {
     return list as String[];
   };
 
-  return { listOFBreeds, getAllBreeds };
+  const getImageBybreed = async (breed: string) => {
+    try {
+      const response = await fetch(URL + "/" + breed + "/images/random");
+      const object = await response.json();
+      return object["message"];
+    } catch (error) {}
+  };
+  return { listOFBreeds, getAllBreeds, getImageBybreed };
 });

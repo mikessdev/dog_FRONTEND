@@ -35,7 +35,7 @@ const reloadPageContent = (number: number) => {
     <div class="home-header">
       <h1 class="home-title">Dog API</h1>
       <div class="home-car">
-        <spa>Carrinho</spa>
+        <span>Carrinho</span>
         <img src="../assets/doguinho.png" width="80" />
       </div>
     </div>
