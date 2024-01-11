@@ -11,7 +11,6 @@ const props = defineProps({
 
 const emit = defineEmits(["click"]);
 
-// const currentPage = ref<number>(1);
 const firstPage = 1;
 
 const onClick = (number: number) => {
