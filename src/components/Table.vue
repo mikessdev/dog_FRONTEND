@@ -7,6 +7,12 @@ const props = defineProps({
     default: [],
   },
 });
+
+const emit = defineEmits(["click"]);
+
+const onClick = (name: string) => {
+  emit("click", name);
+};
 </script>
 <template>
   <table class="table-breed">
@@ -21,7 +27,11 @@ const props = defineProps({
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(breed, index) in list" :key="index">
+      <tr
+        v-for="(breed, index) in list"
+        :key="index"
+        @click="onClick(breed.name)"
+      >
         <td class="apply-border">{{ breed.name }}</td>
         <td>
           <span v-for="(sub, index2) in breed.subBreed" :key="index2"

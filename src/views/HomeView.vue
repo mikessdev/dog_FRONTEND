@@ -3,13 +3,15 @@ import { useBreedStore, type Breed } from "@/stores/breedStore";
 import { ref, onMounted } from "vue";
 import Pagination from "@/components/Pagination.vue";
 import Table from "@/components/Table.vue";
-
-const numberItemsByPage = 10;
+import FloatingIMG from "@/components/FloatingIMG.vue";
+import Header from "@/components/Header.vue";
 
 const breedStore = useBreedStore();
 
+const numberItemsByPage = 10;
 const listOnDisplay = ref<Breed[]>([]);
 const pageLength = ref<number>(0);
+const showImage = ref<boolean>(false);
 
 onMounted(async () => {
   await breedStore.getAllBreeds();
@@ -34,21 +36,24 @@ const reloadPageContent = (number: number) => {
     last
   ) as unknown as Breed[];
 };
+
+const loadImageByBreed = async (breed: string) => {
+  await breedStore.getImageByBreed(breed);
+  showImage.value = true;
+};
 </script>
 
 <template>
   <main class="home-view">
-    <div class="home-header">
-      <h1 class="home-title">Dog API</h1>
-      <router-link to="/dogs">
-        <div class="home-car">
-          <span>Carrinho</span>
-          <img src="../assets/doguinho.png" width="80" />
-        </div>
-      </router-link>
-    </div>
-    <Table :list="listOnDisplay" />
+    <Header />
+    <Table :list="listOnDisplay" @click="(e) => loadImageByBreed(e)" />
     <Pagination @click="(e) => reloadPageContent(e)" :pageAmount="pageLength" />
+    <FloatingIMG
+      v-if="showImage"
+      @close="showImage = false"
+      :image="breedStore.breedImage"
+      :showImage="showImage"
+    />
   </main>
 </template>
 
@@ -57,28 +62,5 @@ const reloadPageContent = (number: number) => {
   display: flex;
   flex-direction: column;
   margin-bottom: 100px;
-}
-
-.home-header {
-  padding: 20px 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-}
-.home-title {
-  text-align: center;
-  font-size: 40px;
-  font-weight: 600;
-}
-
-.home-car {
-  display: flex;
-  align-items: center;
-  flex-direction: column-reverse;
-  font-weight: 600;
-  font-size: 20px;
-  cursor: pointer;
-  color: #31394d;
 }
 </style>
