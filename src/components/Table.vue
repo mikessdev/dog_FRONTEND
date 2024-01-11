@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Breed } from "@/stores/breedStore";
+import { ref } from "vue";
 
 const props = defineProps({
   list: {
@@ -8,9 +9,12 @@ const props = defineProps({
   },
 });
 
+const selectedRow = ref<string>("");
+
 const emit = defineEmits(["click"]);
 
 const onClick = (name: string) => {
+  selectedRow.value = name;
   emit("click", name);
 };
 </script>
@@ -28,11 +32,12 @@ const onClick = (name: string) => {
     </thead>
     <tbody>
       <tr
+        :class="[breed.name === selectedRow ? 'isSelected' : 'NoSelected']"
         v-for="(breed, index) in list"
         :key="index"
         @click="onClick(breed.name)"
       >
-        <td class="apply-border">{{ breed.name }}</td>
+        <td>{{ breed.name }}</td>
         <td>
           <span v-for="(sub, index2) in breed.subBreed" :key="index2"
             >{{ sub }}<span v-if="breed.subBreed?.length > 1">, </span>
@@ -63,9 +68,14 @@ const onClick = (name: string) => {
   border-radius: 4px;
 }
 
-.table-breed tbody tr {
+.NoSelected {
   transition: transform 0.2s;
   background-color: rgb(189, 189, 189);
+}
+.isSelected {
+  transform: scale(1.05);
+  background-color: rgb(112, 112, 112);
+  color: white;
 }
 
 .table-breed tbody tr:hover {
@@ -73,6 +83,7 @@ const onClick = (name: string) => {
   background-color: rgb(112, 112, 112);
   color: white;
 }
+
 .table-breed td {
   padding: 10px;
   border-radius: 4px;
