@@ -56,6 +56,8 @@ const reloadPageContent = (number: number) => {
       v-if="showEditCard"
       :breedName="breed.name"
       :image="breed.image"
+      @close="showEditCard = false"
+      @save=""
     />
   </main>
 </template>
