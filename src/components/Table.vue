@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import type { Breed } from "@/stores/breedStore";
 import { ref } from "vue";
+import DropDown from "@/components/DropDown.vue";
+
+const options = ["Marrom", "preto", "branco", "caramelo"];
+const selectedRow = ref<string>("");
+
+const emit = defineEmits(["click"]);
 
 const props = defineProps({
   list: {
@@ -9,12 +15,7 @@ const props = defineProps({
   },
 });
 
-const selectedRow = ref<string>("");
-
-const emit = defineEmits(["click"]);
-
 const onClick = (name: string) => {
-  selectedRow.value = name;
   emit("click", name);
 };
 </script>
@@ -35,15 +36,17 @@ const onClick = (name: string) => {
         :class="[breed.name === selectedRow ? 'isSelected' : 'NoSelected']"
         v-for="(breed, index) in list"
         :key="index"
-        @click="onClick(breed.name)"
+        @click="() => (selectedRow = breed.name)"
       >
-        <td>{{ breed.name }}</td>
+        <td class="breed-name" @click="onClick(breed.name)">
+          {{ breed.name }}
+        </td>
         <td>
           <span v-for="(sub, index2) in breed.subBreed" :key="index2"
             >{{ sub }}<span v-if="breed.subBreed?.length > 1">, </span>
           </span>
         </td>
-        <td>{{ "" }}</td>
+        <td><DropDown title="Selecione uma cor" :options="options" /></td>
         <td>{{ "" }}</td>
         <td>{{ "" }}</td>
         <td>{{ "" }}</td>
@@ -68,6 +71,10 @@ const onClick = (name: string) => {
   border-radius: 4px;
 }
 
+.breed-name {
+  cursor: pointer;
+}
+
 .NoSelected {
   transition: transform 0.2s;
   background-color: rgb(189, 189, 189);
@@ -81,7 +88,7 @@ const onClick = (name: string) => {
 .table-breed tbody tr:hover {
   transform: scale(1.05);
   background-color: rgb(112, 112, 112);
-  color: white;
+  color: #e2e3ea;
 }
 
 .table-breed td {
