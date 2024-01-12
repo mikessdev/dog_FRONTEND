@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import useDogStorage from "@/composables/useDogStorage";
+import type { Dog } from "@/interfaces/Dog";
+import { reactive } from "vue";
+
 const props = defineProps({
   image: {
     type: String,
@@ -15,7 +19,36 @@ const emit = defineEmits(["close", "save"]);
 const close = () => {
   emit("close");
 };
+
+const dogInfoState = reactive({
+  nickname: "",
+  color: "",
+  age: "",
+  size: "",
+});
+
 const save = () => {
+  const dogInfo = {
+    image: props.image,
+    breed: props.breedName,
+    age: dogInfoState.age,
+    name: dogInfoState.nickname,
+    color: dogInfoState.color,
+    size: dogInfoState.size,
+  } as Dog;
+
+  const breedAlreadyExist = useDogStorage.checkIfDogExist(dogInfo.breed);
+  console.log(breedAlreadyExist);
+
+  if (breedAlreadyExist) {
+    useDogStorage.addDog(dogInfo);
+  }
+
+  if (!breedAlreadyExist) {
+    useDogStorage.removeDog(dogInfo);
+    useDogStorage.addDog(dogInfo);
+  }
+
   emit("save");
 };
 </script>
@@ -42,10 +75,18 @@ const save = () => {
         <span class="breed-title"> {{ breedName }}</span>
 
         <div class="card-adictional-info">
-          <input type="text" placeholder="Apelido" />
-          <input type="text" placeholder="Cor" />
-          <input type="text" placeholder="Idade" />
-          <input type="text" placeholder="Tamanho" />
+          <input
+            type="text"
+            placeholder="Apelido"
+            v-model="dogInfoState.nickname"
+          />
+          <input type="text" placeholder="Cor" v-model="dogInfoState.color" />
+          <input type="text" placeholder="Idade" v-model="dogInfoState.age" />
+          <input
+            type="text"
+            placeholder="Tamanho"
+            v-model="dogInfoState.size"
+          />
         </div>
       </div>
     </div>

@@ -30,17 +30,6 @@ const rowHover = (name: string) => {
 
 const saveBreed = (breed: string) => {
   emit("click", { name: breed, image: breedImage.value });
-  // const breedAlreadyExist = useDogStorage.checkIfDogExist(breedInfo.name);
-  // console.log(breedAlreadyExist);
-
-  // if (breedAlreadyExist) {
-  //   useDogStorage.addDog(breedInfo);
-  // }
-
-  // if (!breedAlreadyExist) {
-  //   useDogStorage.removeDog(breedInfo);
-  //   useDogStorage.addDog(breedInfo);
-  // }
 };
 
 const loadImageByBreed = async (breed: string) => {

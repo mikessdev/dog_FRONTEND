@@ -57,7 +57,7 @@ const reloadPageContent = (number: number) => {
       :breedName="breed.name"
       :image="breed.image"
       @close="showEditCard = false"
-      @save=""
+      @save="showEditCard = false"
     />
   </main>
 </template>
