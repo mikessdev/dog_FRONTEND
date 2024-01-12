@@ -10,7 +10,6 @@ export interface Breed {
 
 export const useBreedStore = defineStore("breed", () => {
   const listOFBreeds = ref<Breed[]>([]);
-  const breedImage = ref<string>("");
 
   const getAllBreeds = async () => {
     try {
@@ -35,7 +34,7 @@ export const useBreedStore = defineStore("breed", () => {
       const object = await response.json();
       const succes = object["status"] === "success";
       if (succes) {
-        return (breedImage.value = object["message"]);
+        return object["message"];
       }
     } catch (error) {}
   };
@@ -48,5 +47,5 @@ export const useBreedStore = defineStore("breed", () => {
     return list;
   };
 
-  return { listOFBreeds, breedImage, getAllBreeds, getImageByBreed };
+  return { listOFBreeds, getAllBreeds, getImageByBreed };
 });

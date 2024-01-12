@@ -5,6 +5,7 @@ import useDogStorage from "@/composables/useDogStorage";
 import type { Dog } from "@/interfaces/Dog";
 
 const selectedRow = ref<string>("");
+const breedImage = ref<string>("");
 
 const breedStore = useBreedStore();
 
@@ -19,7 +20,7 @@ const props = defineProps({
 
 const onClick = (name: string) => {
   selectedRow.value = name;
-  emit("click", name);
+  loadImageByBreed(name);
 };
 
 const inputBreed = ref<string>("");
@@ -27,18 +28,23 @@ const rowHover = (name: string) => {
   inputBreed.value = name;
 };
 
-const saveBreed = (breedInfo: Dog) => {
-  const breedAlreadyExist = useDogStorage.checkIfDogExist(breedInfo.name);
-  console.log(breedAlreadyExist);
+const saveBreed = (breed: string) => {
+  emit("click", { name: breed, image: breedImage.value });
+  // const breedAlreadyExist = useDogStorage.checkIfDogExist(breedInfo.name);
+  // console.log(breedAlreadyExist);
 
-  if (breedAlreadyExist) {
-    useDogStorage.addDog(breedInfo);
-  }
+  // if (breedAlreadyExist) {
+  //   useDogStorage.addDog(breedInfo);
+  // }
 
-  if (!breedAlreadyExist) {
-    useDogStorage.removeDog(breedInfo);
-    useDogStorage.addDog(breedInfo);
-  }
+  // if (!breedAlreadyExist) {
+  //   useDogStorage.removeDog(breedInfo);
+  //   useDogStorage.addDog(breedInfo);
+  // }
+};
+
+const loadImageByBreed = async (breed: string) => {
+  breedImage.value = await breedStore.getImageByBreed(breed);
 };
 </script>
 <template>
@@ -55,29 +61,28 @@ const saveBreed = (breedInfo: Dog) => {
         :class="[breed.name === selectedRow ? 'isSelected' : 'NoSelected']"
         v-for="(breed, index) in list"
         :key="index"
-        @click="onClick(breed.name)"
         @mouseover="rowHover(breed.name)"
         @mouseleave="rowHover(breed.name)"
       >
-        <td>
+        <td @click="onClick(breed.name)">
           <span class="breed-name"> {{ breed.name }} </span>
         </td>
 
-        <td>
+        <td @click="onClick(breed.name)">
           <span v-for="(sub, index2) in breed.subBreed" :key="index2"
             >{{ sub }}<span v-if="breed.subBreed?.length > 1">, </span>
           </span>
         </td>
-        <td class="breed-image">
+        <td class="breed-image" @click="onClick(breed.name)">
           <img
             v-show="selectedRow === breed.name"
-            :src="breedStore.breedImage"
+            :src="breedImage"
             height="100"
           />
         </td>
-        <td v-if="selectedRow == breed.name">
+        <td class="push-to-car" v-if="selectedRow == breed.name">
           <span
-            @click="saveBreed({} as unknown as Dog)"
+            @click="saveBreed(selectedRow)"
             class="material-symbols-outlined addToCar"
           >
             add_shopping_cart
@@ -148,5 +153,9 @@ const saveBreed = (breedInfo: Dog) => {
 .breed-image {
   display: flex;
   justify-content: center;
+}
+
+.push-to-car {
+  text-align: center;
 }
 </style>

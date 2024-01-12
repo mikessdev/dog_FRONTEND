@@ -3,16 +3,16 @@ import { useBreedStore, type Breed } from "@/stores/breedStore";
 import { ref, onMounted } from "vue";
 import Pagination from "@/components/Pagination.vue";
 import Table from "@/components/Table.vue";
-import FloatingIMG from "@/components/FloatingIMG.vue";
 import Header from "@/components/Header.vue";
+import EditCard from "@/components/EditCard.vue";
 
 const breedStore = useBreedStore();
 
 const numberItemsByPage = 14;
 const listOnDisplay = ref<Breed[]>([]);
 const pageLength = ref<number>(0);
-const showImage = ref<boolean>(false);
-const breedName = ref<string>("");
+const showEditCard = ref<boolean>(false);
+const breed = ref<object>({});
 
 onMounted(async () => {
   await breedStore.getAllBreeds();
@@ -37,21 +37,26 @@ const reloadPageContent = (number: number) => {
     last
   ) as unknown as Breed[];
 };
-
-const loadImageByBreed = async (breed: string) => {
-  breedName.value = breed;
-  await breedStore.getImageByBreed(breed);
-  showImage.value = true;
-};
-
-const saveBreedIMG = () => {};
 </script>
 
 <template>
   <main class="home-view">
     <Header />
-    <Table :list="listOnDisplay" @click="(e) => loadImageByBreed(e)" />
+    <Table
+      :list="listOnDisplay"
+      @click="
+        (e) => {
+          showEditCard = true;
+          breed = { name: e.name, image: e.image };
+        }
+      "
+    />
     <Pagination @click="(e) => reloadPageContent(e)" :pageAmount="pageLength" />
+    <EditCard
+      v-if="showEditCard"
+      :breedName="breed.name"
+      :image="breed.image"
+    />
   </main>
 </template>
 
