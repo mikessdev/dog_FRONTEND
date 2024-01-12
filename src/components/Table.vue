@@ -57,7 +57,8 @@ const loadImageByBreed = async (breed: string) => {
 
         <td @click="onClick(breed.name)">
           <span v-for="(sub, index2) in breed.subBreed" :key="index2"
-            >{{ sub }}<span v-if="breed.subBreed?.length > 1">, </span>
+            >{{ sub
+            }}<span v-if="breed.subBreed && breed.subBreed.length > 1">, </span>
           </span>
         </td>
         <td class="breed-image" @click="onClick(breed.name)">
