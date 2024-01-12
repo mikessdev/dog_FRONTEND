@@ -8,10 +8,11 @@ import Header from "@/components/Header.vue";
 
 const breedStore = useBreedStore();
 
-const numberItemsByPage = 10;
+const numberItemsByPage = 6;
 const listOnDisplay = ref<Breed[]>([]);
 const pageLength = ref<number>(0);
 const showImage = ref<boolean>(false);
+const breedName = ref<string>("");
 
 onMounted(async () => {
   await breedStore.getAllBreeds();
@@ -38,9 +39,12 @@ const reloadPageContent = (number: number) => {
 };
 
 const loadImageByBreed = async (breed: string) => {
+  breedName.value = breed;
   await breedStore.getImageByBreed(breed);
   showImage.value = true;
 };
+
+const saveBreedIMG = () => {};
 </script>
 
 <template>
@@ -51,8 +55,10 @@ const loadImageByBreed = async (breed: string) => {
     <FloatingIMG
       v-if="showImage"
       @close="showImage = false"
+      @save="saveBreedIMG"
       :image="breedStore.breedImage"
       :showImage="showImage"
+      :breed-name="breedName"
     />
   </main>
 </template>

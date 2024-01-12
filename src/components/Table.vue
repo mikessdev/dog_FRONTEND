@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { Breed } from "@/stores/breedStore";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import DropDown from "@/components/DropDown.vue";
+import useDogStorage from "@/composables/useDogStorage";
+import type { Dog } from "@/interfaces/Dog";
 
 const options = ["Marrom", "preto", "branco", "caramelo"];
 const selectedRow = ref<string>("");
@@ -22,6 +24,30 @@ const onClick = (name: string) => {
 const inputBreed = ref<string>("");
 const rowHover = (name: string) => {
   inputBreed.value = name;
+};
+
+const rowState = reactive({
+  dogIMG: {
+    value: "",
+  },
+  color: {
+    value: "",
+  },
+  size: {
+    value: "",
+  },
+  name: {
+    value: "",
+    age: {
+      value: "",
+    },
+  },
+});
+
+const saveBreed = (breedInfo: Dog) => {
+  useDogStorage.addDog(breedInfo);
+  const breedAlreadyExist = useDogStorage.getDogByBreed(breedInfo.name);
+  console.log(breedAlreadyExist);
 };
 </script>
 <template>
@@ -112,6 +138,14 @@ const rowHover = (name: string) => {
             </span>
           </div>
         </td>
+        <td v-if="selectedRow == breed.name">
+          <span
+            @click="saveBreed({ name: breed.name } as Dog)"
+            class="material-symbols-outlined addToCar"
+          >
+            add_shopping_cart
+          </span>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -155,7 +189,7 @@ const rowHover = (name: string) => {
 }
 
 .table-breed tbody tr:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
   background-color: rgb(112, 112, 112);
   color: #e2e3ea;
 }
@@ -187,5 +221,9 @@ const rowHover = (name: string) => {
 
 .base-input:focus-visible {
   outline: none;
+}
+
+.addToCar {
+  cursor: pointer;
 }
 </style>

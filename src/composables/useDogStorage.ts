@@ -1,14 +1,8 @@
 import { ref } from "vue";
+import { type Dog } from "@/interfaces/Dog";
 
 const dogStorageKey = "dogStorage";
 const dogStorage = ref(JSON.parse(localStorage.getItem(dogStorageKey)) || []);
-
-export interface Dog {
-  breed: string;
-  color: string;
-  name: string;
-  age: number;
-}
 
 const useDogStorage = () => {
   const setCurrentDogs = (dogs: Dog[]) => {
@@ -29,15 +23,20 @@ const useDogStorage = () => {
     }
   };
 
-  const getCurrentDogs = () => {
+  const getAllDogs = () => {
     return dogStorage.value;
   };
 
+  const getDogByBreed = (breed: string) => {
+    return dogStorage.value.filter((dog) => dog.breed === breed);
+  };
+
   return {
-    getCurrentDogs,
+    getAllDogs,
     setCurrentDogs,
     addDog,
     removeDog,
+    getDogByBreed,
   };
 };
 
