@@ -45,8 +45,9 @@ const rowHover = (name: string) => {
         @mouseover="rowHover(breed.name)"
         @mouseleave="rowHover(breed.name)"
       >
-        <td class="breed-name" @click="onClick(breed.name)">
-          {{ breed.name }}
+        <td class="breed-name-container" @click="onClick(breed.name)">
+          <span class="breed-name"> {{ breed.name }} </span>
+          <span class="material-symbols-outlined"> photo_camera </span>
         </td>
         <td>
           <span v-for="(sub, index2) in breed.subBreed" :key="index2"
@@ -55,37 +56,61 @@ const rowHover = (name: string) => {
         </td>
         <td><DropDown title="Selecione uma cor" :options="options" /></td>
         <td>
-          <input
-            class="base-input"
-            :class="[
-              inputBreed == breed.name || selectedRow == breed.name
-                ? 'inputIsHover'
-                : 'inputNotHover',
-            ]"
-            type="text"
-          />
+          <div class="table-input">
+            <input
+              class="base-input"
+              :class="[
+                inputBreed == breed.name || selectedRow == breed.name
+                  ? 'inputIsHover'
+                  : 'inputNotHover',
+              ]"
+              type="text"
+            />
+            <span
+              v-if="selectedRow == breed.name"
+              class="material-symbols-outlined"
+            >
+              border_color
+            </span>
+          </div>
         </td>
         <td>
-          <input
-            class="base-input"
-            :class="[
-              inputBreed == breed.name || selectedRow == breed.name
-                ? 'inputIsHover'
-                : 'inputNotHover',
-            ]"
-            type="text"
-          />
+          <div class="table-input">
+            <input
+              class="base-input"
+              :class="[
+                inputBreed == breed.name || selectedRow == breed.name
+                  ? 'inputIsHover'
+                  : 'inputNotHover',
+              ]"
+              type="text"
+            />
+            <span
+              v-if="selectedRow == breed.name"
+              class="material-symbols-outlined"
+            >
+              border_color
+            </span>
+          </div>
         </td>
         <td>
-          <input
-            class="base-input"
-            :class="[
-              inputBreed == breed.name || selectedRow == breed.name
-                ? 'inputIsHover'
-                : 'inputNotHover',
-            ]"
-            type="text"
-          />
+          <div class="table-input">
+            <input
+              class="base-input"
+              :class="[
+                inputBreed == breed.name || selectedRow == breed.name
+                  ? 'inputIsHover'
+                  : 'inputNotHover',
+              ]"
+              type="text"
+            />
+            <span
+              v-if="selectedRow == breed.name"
+              class="material-symbols-outlined"
+            >
+              border_color
+            </span>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -108,8 +133,15 @@ const rowHover = (name: string) => {
   border-radius: 4px;
 }
 
-.breed-name {
+.breed-name-container {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.breed-name {
+  margin-right: 4px;
 }
 
 .NoSelected {
@@ -133,6 +165,10 @@ const rowHover = (name: string) => {
   border-radius: 4px;
 }
 
+.table-input {
+  display: flex;
+  align-items: center;
+}
 .base-input {
   height: 20px;
   border: none;

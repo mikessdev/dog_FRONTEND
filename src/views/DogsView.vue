@@ -1,15 +1,23 @@
+<script setup lang="ts">
+import useDogStorage from "@/composables/useDogStorage";
+import Card from "@/components/Card.vue";
+</script>
+
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <main class="dogs-view">
+    <h1>Aqui estão todos os doguinhos que foram selecionados.</h1>
+
+    <ul>
+      <li v-for="(dog, index) in useDogStorage.getCurrentDogs()" :key="index">
+        <Card :breed="dog.name" />
+      </li>
+    </ul>
+  </main>
 </template>
 
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
+.dogs-view h1 {
+  text-align: center;
+  margin-top: 40px;
 }
 </style>
