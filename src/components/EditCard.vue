@@ -42,13 +42,10 @@ const save = () => {
         <span class="breed-title"> {{ breedName }}</span>
 
         <div class="card-adictional-info">
-          <span class="breed-title">Apelido: </span>
-          <br />
-          <span class="breed-title">Cor: </span>
-          <br />
-          <span class="breed-title">Idade: </span>
-          <br />
-          <span class="breed-title">Tamanho: </span>
+          <input type="text" placeholder="Apelido" />
+          <input type="text" placeholder="Cor" />
+          <input type="text" placeholder="Idade" />
+          <input type="text" placeholder="Tamanho" />
         </div>
       </div>
     </div>
@@ -74,7 +71,7 @@ const save = () => {
 .card-container {
   background-color: #31394d;
   width: 300px;
-  height: 400px;
+  height: 450px;
   cursor: pointer;
   color: #e2e3ea;
   align-items: center;
@@ -104,9 +101,32 @@ const save = () => {
 .card-adictional-info {
   margin-top: 20px;
   margin-left: 10px;
+  margin-right: 10px;
   text-align: left;
 }
 
+.card-adictional-info input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e3ea;
+  background-color: #31394d;
+  border-color: #e2e3ea;
+  font-size: 18px;
+  color: #e2e3ea;
+  margin-bottom: 4px;
+}
+
+.card-adictional-info input:focus-visible {
+  outline: none;
+}
+
+.base-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
 .commands-container {
   display: flex;
   width: 300px;

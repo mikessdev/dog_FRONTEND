@@ -116,11 +116,13 @@ const loadImageByBreed = async (breed: string) => {
 .NoSelected {
   transition: transform 0.2s;
   background-color: rgb(189, 189, 189);
+  cursor: pointer;
 }
 .isSelected {
   transform: scale(1.05);
   background-color: rgb(112, 112, 112);
   color: #e2e3ea;
+  cursor: pointer;
 }
 
 .table-breed tbody tr:hover {
