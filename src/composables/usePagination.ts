@@ -1,7 +1,10 @@
 import { ref } from "vue";
 
 const currentPageKey = "currentPage";
-const currentPage = ref(parseInt(localStorage.getItem(currentPageKey)) || 1);
+const storedPage = localStorage.getItem(currentPageKey);
+const initialPage = storedPage ? parseInt(storedPage) : 1;
+
+const currentPage = ref(initialPage);
 
 const usePagination = () => {
   const setCurrentPage = (number: number) => {

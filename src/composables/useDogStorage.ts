@@ -2,7 +2,10 @@ import { ref } from "vue";
 import { type Dog } from "@/interfaces/Dog";
 
 const dogStorageKey = "dogStorage";
-const dogStorage = ref(JSON.parse(localStorage.getItem(dogStorageKey)) || []);
+const storedDogs = localStorage.getItem(dogStorageKey);
+const initialDogs = storedDogs ? JSON.parse(storedDogs) : [];
+
+const dogStorage = ref<Dog[]>(initialDogs);
 
 const useDogStorage = () => {
   const setCurrentDogs = (dogs: Dog[]) => {

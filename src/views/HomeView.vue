@@ -6,6 +6,7 @@ import Table from "@/components/Table.vue";
 import Header from "@/components/Header.vue";
 import EditCard from "@/components/EditCard.vue";
 import usePagination from "@/composables/usePagination";
+import type { Dog } from "@/interfaces/Dog";
 
 const breedStore = useBreedStore();
 
@@ -13,7 +14,7 @@ const numberItemsByPage = 14;
 const listOnDisplay = ref<Breed[]>([]);
 const pageLength = ref<number>(0);
 const showEditCard = ref<boolean>(false);
-const breed = ref<object>({});
+const breed = ref<Dog>({} as Dog);
 
 onMounted(async () => {
   await breedStore.getAllBreeds();
@@ -45,14 +46,14 @@ const reloadPageContent = (number: number) => {
       @click="
         (e) => {
           showEditCard = true;
-          breed = { name: e.name, image: e.image };
+          breed = { breed: e.name, image: e.image } as Dog;
         }
       "
     />
     <Pagination @click="(e) => reloadPageContent(e)" :pageAmount="pageLength" />
     <EditCard
       v-if="showEditCard"
-      :breedName="breed.name"
+      :breedName="breed.breed"
       :image="breed.image"
       @close="showEditCard = false"
       @save="showEditCard = false"

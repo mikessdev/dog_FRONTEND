@@ -3,6 +3,10 @@ import { defineStore } from "pinia";
 
 const URL: string = "https://dog.ceo/api/breed";
 
+interface BreedObject {
+  [key: string]: string[];
+}
+
 export interface Breed {
   name: string;
   subBreed?: string[];
@@ -39,7 +43,7 @@ export const useBreedStore = defineStore("breed", () => {
     } catch (error) {}
   };
 
-  const convertObjectToList = (object: object) => {
+  const convertObjectToList = (object: BreedObject) => {
     const list: Breed[] = Object.keys(object).map((key) => {
       return { name: key, subBreed: object[key] } as Breed;
     });
