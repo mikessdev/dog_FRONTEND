@@ -2,6 +2,15 @@
 import useDogStorage from "@/composables/useDogStorage";
 import Card from "@/components/Card.vue";
 import Filter from "@/components/Filter.vue";
+import { type Dog } from "@/interfaces/Dog";
+import { ref } from "vue";
+
+const dogsList = ref(useDogStorage.getAllDogs());
+
+const filter = (arr: Dog[]) => {
+  console.log(arr);
+  dogsList.value = arr;
+};
 </script>
 
 <template>
@@ -14,10 +23,10 @@ import Filter from "@/components/Filter.vue";
     </router-link>
     <h1>Aqui estão todos os doguinhos que foram selecionados.</h1>
     <div class="filter-container">
-      <Filter text="" />
+      <Filter text="" @filter="(e) => filter(e)" />
     </div>
     <ul class="card-group">
-      <li v-for="(dog, index) in useDogStorage.getAllDogs()" :key="index">
+      <li v-for="(dog, index) in dogsList" :key="index">
         <Card :breed="dog" />
       </li>
     </ul>

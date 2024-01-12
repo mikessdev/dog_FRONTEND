@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import useDogStorage from "@/composables/useDogStorage";
 
 const emit = defineEmits(["filter"]);
 
 const text = ref("");
 
-const search = () => {
-  console.log(text.value);
+const filter = () => {
+  const arr = useDogStorage.getAllDogs().filter((e) => e.name === text.value);
+  emit("filter", arr);
 };
 </script>
 
 <template>
   <div class="filter">
     <input placeholder="coloque um apelido" v-model="text" />
-    <button @click="search">Filtrar</button>
+    <button @click="filter">Filtrar</button>
     <span class="material-symbols-outlined"> sort_by_alpha </span>
   </div>
 </template>
@@ -45,7 +47,7 @@ const search = () => {
   background-color: #31394d;
   color: #e2e3ea;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.25rem;
+  border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
   box-sizing: border-box;
   font-weight: 600;
