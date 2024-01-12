@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import useDogStorage from "@/composables/useDogStorage";
 
-const emit = defineEmits(["filter"]);
+const emit = defineEmits(["filter", "sort"]);
 
 const text = ref("");
 
@@ -10,13 +10,20 @@ const filter = () => {
   const arr = useDogStorage.getAllDogs().filter((e) => e.name === text.value);
   emit("filter", arr);
 };
+
+const sort = () => {
+  const arr = useDogStorage
+    .getAllDogs()
+    .sort((a, b) => a.name.localeCompare(b.name));
+  emit("sort", arr);
+};
 </script>
 
 <template>
   <div class="filter">
     <input placeholder="coloque um apelido" v-model="text" />
     <button @click="filter">Filtrar</button>
-    <span class="material-symbols-outlined"> sort_by_alpha </span>
+    <span @click="sort" class="material-symbols-outlined"> sort_by_alpha </span>
   </div>
 </template>
 

@@ -8,6 +8,10 @@ import { ref } from "vue";
 const dogsList = ref(useDogStorage.getAllDogs());
 
 const filter = (arr: Dog[]) => {
+  dogsList.value = arr;
+};
+
+const sort = (arr: Dog[]) => {
   console.log(arr);
   dogsList.value = arr;
 };
@@ -23,7 +27,7 @@ const filter = (arr: Dog[]) => {
     </router-link>
     <h1>Aqui estão todos os doguinhos que foram selecionados.</h1>
     <div class="filter-container">
-      <Filter text="" @filter="(e) => filter(e)" />
+      <Filter text="" @filter="(e) => filter(e)" @sort="(e) => sort(e)" />
     </div>
     <ul class="card-group">
       <li v-for="(dog, index) in dogsList" :key="index">
