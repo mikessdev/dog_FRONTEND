@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { Dog } from "@/interfaces/Dog";
+import type { PropType } from "vue";
+
 const props = defineProps({
   breed: {
-    type: String,
-    default: "",
+    type: Object as PropType<Dog>,
+    default: {},
   },
   subBreed: {
     type: Array<String>,
@@ -14,20 +17,33 @@ const props = defineProps({
 <template>
   <div class="card-container">
     <img
+      v-if="breed.image"
       class="breed-image"
-      src="../assets/404_doguinho_not_found.png"
+      :src="breed.image"
+      :alt="breed + 'image'"
+      width="300"
+      height="200"
+    />
+    <img
+      v-else
+      class="breed-image"
+      src="../assets//icon-image-not-found-free-vector.jpg"
       :alt="breed + 'image'"
       width="300"
       height="200"
     />
     <div class="breed-info">
-      <span class="breed-title"> {{ breed }}</span>
-      <ul class="sub-breed-container" v-if="subBreed.length">
-        <span>sub-breed: </span>
-        <li v-for="(breed, index) in subBreed" :key="index">
-          <span>{{ breed }}</span>
-        </li>
-      </ul>
+      <span class="breed-title"> {{ breed.breed }}</span>
+
+      <div class="card-adictional-info">
+        <span class="breed-title">Apelido: {{ breed.name }}</span>
+        <br />
+        <span class="breed-title">Cor: {{ breed.color }}</span>
+        <br />
+        <span class="breed-title">Idade: {{ breed.age }}</span>
+        <br />
+        <span class="breed-title">Tamanho: {{ breed.size }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -67,5 +83,11 @@ const props = defineProps({
   font-weight: 600;
   text-transform: uppercase;
   margin: 10px auto 0 auto;
+}
+
+.card-adictional-info {
+  margin-top: 20px;
+  margin-left: 10px;
+  text-align: left;
 }
 </style>

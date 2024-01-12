@@ -15,7 +15,7 @@ import Card from "@/components/Card.vue";
 
     <ul class="card-group">
       <li v-for="(dog, index) in useDogStorage.getAllDogs()" :key="index">
-        <Card :breed="dog.name" />
+        <Card :breed="dog" />
       </li>
     </ul>
   </main>

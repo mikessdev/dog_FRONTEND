@@ -27,7 +27,7 @@ const rowHover = (name: string) => {
 };
 
 const rowState = reactive({
-  dogIMG: {
+  image: {
     value: "",
   },
   color: {
@@ -38,16 +38,28 @@ const rowState = reactive({
   },
   name: {
     value: "",
-    age: {
-      value: "",
-    },
+  },
+  age: {
+    value: "",
   },
 });
 
 const saveBreed = (breedInfo: Dog) => {
-  useDogStorage.addDog(breedInfo);
-  const breedAlreadyExist = useDogStorage.getDogByBreed(breedInfo.name);
+  const breedAlreadyExist = useDogStorage.checkIfDogExist(breedInfo.name);
   console.log(breedAlreadyExist);
+
+  if (breedAlreadyExist) {
+    useDogStorage.addDog(breedInfo);
+  }
+
+  if (!breedAlreadyExist) {
+    useDogStorage.removeDog(breedInfo);
+    useDogStorage.addDog(breedInfo);
+  }
+};
+
+const getInputValue = (value: string) => {
+  console.log(value);
 };
 </script>
 <template>
@@ -91,6 +103,7 @@ const saveBreed = (breedInfo: Dog) => {
                   : 'inputNotHover',
               ]"
               type="text"
+              v-model="rowState.size.value"
             />
             <span
               v-if="selectedRow == breed.name"
@@ -110,6 +123,7 @@ const saveBreed = (breedInfo: Dog) => {
                   : 'inputNotHover',
               ]"
               type="text"
+              v-model="rowState.name.value"
             />
             <span
               v-if="selectedRow == breed.name"
@@ -129,6 +143,7 @@ const saveBreed = (breedInfo: Dog) => {
                   : 'inputNotHover',
               ]"
               type="text"
+              v-model="rowState.age.value"
             />
             <span
               v-if="selectedRow == breed.name"
@@ -140,7 +155,16 @@ const saveBreed = (breedInfo: Dog) => {
         </td>
         <td v-if="selectedRow == breed.name">
           <span
-            @click="saveBreed({ name: breed.name } as Dog)"
+            @click="
+              saveBreed({
+                breed: breed.name,
+                age: rowState.age.value,
+                name: rowState.name.value,
+                color: rowState.color.value,
+                size: rowState.size.value,
+                Image: rowState.image.value,
+              } as unknown as Dog)
+            "
             class="material-symbols-outlined addToCar"
           >
             add_shopping_cart
@@ -171,7 +195,7 @@ const saveBreed = (breedInfo: Dog) => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .breed-name {
