@@ -7,7 +7,9 @@ const emit = defineEmits(["filter", "sort"]);
 const text = ref("");
 
 const filter = () => {
-  const arr = useDogStorage.getAllDogs().filter((e) => e.name === text.value);
+  const arr = useDogStorage
+    .getAllDogs()
+    .filter((e: { name: string }) => e.name === text.value);
   emit("filter", arr);
 };
 
