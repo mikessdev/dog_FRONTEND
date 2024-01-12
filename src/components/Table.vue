@@ -65,8 +65,28 @@ const rowHover = (name: string) => {
             type="text"
           />
         </td>
-        <td>{{ "" }}</td>
-        <td>{{ "" }}</td>
+        <td>
+          <input
+            class="base-input"
+            :class="[
+              inputBreed == breed.name || selectedRow == breed.name
+                ? 'inputIsHover'
+                : 'inputNotHover',
+            ]"
+            type="text"
+          />
+        </td>
+        <td>
+          <input
+            class="base-input"
+            :class="[
+              inputBreed == breed.name || selectedRow == breed.name
+                ? 'inputIsHover'
+                : 'inputNotHover',
+            ]"
+            type="text"
+          />
+        </td>
       </tr>
     </tbody>
   </table>
