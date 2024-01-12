@@ -1,4 +1,4 @@
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 
 const currentPageKey = "currentPage";
 const currentPage = ref(parseInt(localStorage.getItem(currentPageKey)) || 1);

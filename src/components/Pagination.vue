@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import usePagination from "@/composables/usePagination";
 
 const props = defineProps({

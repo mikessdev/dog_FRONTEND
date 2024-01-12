@@ -5,6 +5,7 @@ import Pagination from "@/components/Pagination.vue";
 import Table from "@/components/Table.vue";
 import Header from "@/components/Header.vue";
 import EditCard from "@/components/EditCard.vue";
+import usePagination from "@/composables/usePagination";
 
 const breedStore = useBreedStore();
 
@@ -16,10 +17,7 @@ const breed = ref<object>({});
 
 onMounted(async () => {
   await breedStore.getAllBreeds();
-  listOnDisplay.value = breedStore.listOFBreeds.slice(
-    0,
-    numberItemsByPage
-  ) as unknown as Breed[];
+  reloadPageContent(usePagination.getCurrentPage());
   setupPagination();
 });
 
