@@ -18,6 +18,11 @@ const props = defineProps({
 const onClick = (name: string) => {
   emit("click", name);
 };
+
+const inputBreed = ref<string>("");
+const rowHover = (name: string) => {
+  inputBreed.value = name;
+};
 </script>
 <template>
   <table class="table-breed">
@@ -37,6 +42,8 @@ const onClick = (name: string) => {
         v-for="(breed, index) in list"
         :key="index"
         @click="() => (selectedRow = breed.name)"
+        @mouseover="rowHover(breed.name)"
+        @mouseleave="rowHover(breed.name)"
       >
         <td class="breed-name" @click="onClick(breed.name)">
           {{ breed.name }}
@@ -47,7 +54,17 @@ const onClick = (name: string) => {
           </span>
         </td>
         <td><DropDown title="Selecione uma cor" :options="options" /></td>
-        <td>{{ "" }}</td>
+        <td>
+          <input
+            class="base-input"
+            :class="[
+              inputBreed == breed.name || selectedRow == breed.name
+                ? 'inputIsHover'
+                : 'inputNotHover',
+            ]"
+            type="text"
+          />
+        </td>
         <td>{{ "" }}</td>
         <td>{{ "" }}</td>
       </tr>
@@ -82,7 +99,7 @@ const onClick = (name: string) => {
 .isSelected {
   transform: scale(1.05);
   background-color: rgb(112, 112, 112);
-  color: white;
+  color: #e2e3ea;
 }
 
 .table-breed tbody tr:hover {
@@ -94,5 +111,25 @@ const onClick = (name: string) => {
 .table-breed td {
   padding: 10px;
   border-radius: 4px;
+}
+
+.base-input {
+  height: 20px;
+  border: none;
+  background-color: transparent;
+  caret-color: #e2e3ea;
+  font-size: 16px;
+}
+
+.inputIsHover {
+  color: #e2e3ea;
+}
+
+.inputNotHover {
+  color: black;
+}
+
+.base-input:focus-visible {
+  outline: none;
 }
 </style>

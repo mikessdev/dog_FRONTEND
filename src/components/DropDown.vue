@@ -44,8 +44,6 @@ const toggleOptions = () => {
 </template>
 
 <style scoped>
-.dropdown-container {
-}
 .dropdown-title {
   display: flex;
   align-items: center;
