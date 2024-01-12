@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import useDogStorage from "@/composables/useDogStorage";
 import Card from "@/components/Card.vue";
+import Filter from "@/components/Filter.vue";
 </script>
 
 <template>
@@ -12,7 +13,9 @@ import Card from "@/components/Card.vue";
       </div>
     </router-link>
     <h1>Aqui estão todos os doguinhos que foram selecionados.</h1>
-
+    <div class="filter-container">
+      <Filter text="" />
+    </div>
     <ul class="card-group">
       <li v-for="(dog, index) in useDogStorage.getAllDogs()" :key="index">
         <Card :breed="dog" />
@@ -44,5 +47,12 @@ import Card from "@/components/Card.vue";
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+.filter-container {
+  margin: 60px 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 </style>
