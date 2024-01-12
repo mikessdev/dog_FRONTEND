@@ -8,7 +8,7 @@ import Header from "@/components/Header.vue";
 
 const breedStore = useBreedStore();
 
-const numberItemsByPage = 6;
+const numberItemsByPage = 14;
 const listOnDisplay = ref<Breed[]>([]);
 const pageLength = ref<number>(0);
 const showImage = ref<boolean>(false);
@@ -52,14 +52,6 @@ const saveBreedIMG = () => {};
     <Header />
     <Table :list="listOnDisplay" @click="(e) => loadImageByBreed(e)" />
     <Pagination @click="(e) => reloadPageContent(e)" :pageAmount="pageLength" />
-    <FloatingIMG
-      v-if="showImage"
-      @close="showImage = false"
-      @save="saveBreedIMG"
-      :image="breedStore.breedImage"
-      :showImage="showImage"
-      :breed-name="breedName"
-    />
   </main>
 </template>
 

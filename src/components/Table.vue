@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Breed } from "@/stores/breedStore";
+import { useBreedStore, type Breed } from "@/stores/breedStore";
 import { reactive, ref } from "vue";
-import DropDown from "@/components/DropDown.vue";
 import useDogStorage from "@/composables/useDogStorage";
 import type { Dog } from "@/interfaces/Dog";
 
-const options = ["Marrom", "preto", "branco", "caramelo"];
 const selectedRow = ref<string>("");
+
+const breedStore = useBreedStore();
 
 const emit = defineEmits(["click"]);
 
@@ -18,6 +18,7 @@ const props = defineProps({
 });
 
 const onClick = (name: string) => {
+  selectedRow.value = name;
   emit("click", name);
 };
 
@@ -25,24 +26,6 @@ const inputBreed = ref<string>("");
 const rowHover = (name: string) => {
   inputBreed.value = name;
 };
-
-const rowState = reactive({
-  image: {
-    value: "",
-  },
-  color: {
-    value: "",
-  },
-  size: {
-    value: "",
-  },
-  name: {
-    value: "",
-  },
-  age: {
-    value: "",
-  },
-});
 
 const saveBreed = (breedInfo: Dog) => {
   const breedAlreadyExist = useDogStorage.checkIfDogExist(breedInfo.name);
@@ -57,10 +40,6 @@ const saveBreed = (breedInfo: Dog) => {
     useDogStorage.addDog(breedInfo);
   }
 };
-
-const getInputValue = (value: string) => {
-  console.log(value);
-};
 </script>
 <template>
   <table class="table-breed">
@@ -68,10 +47,7 @@ const getInputValue = (value: string) => {
       <tr>
         <th>Raça</th>
         <th>Sub Raças</th>
-        <th>Cor</th>
-        <th>Tamanho</th>
-        <th>Apelido</th>
-        <th>Idade</th>
+        <th>Imagem</th>
       </tr>
     </thead>
     <tbody>
@@ -79,92 +55,29 @@ const getInputValue = (value: string) => {
         :class="[breed.name === selectedRow ? 'isSelected' : 'NoSelected']"
         v-for="(breed, index) in list"
         :key="index"
-        @click="() => (selectedRow = breed.name)"
+        @click="onClick(breed.name)"
         @mouseover="rowHover(breed.name)"
         @mouseleave="rowHover(breed.name)"
       >
-        <td class="breed-name-container" @click="onClick(breed.name)">
+        <td>
           <span class="breed-name"> {{ breed.name }} </span>
-          <span class="material-symbols-outlined"> photo_camera </span>
         </td>
+
         <td>
           <span v-for="(sub, index2) in breed.subBreed" :key="index2"
             >{{ sub }}<span v-if="breed.subBreed?.length > 1">, </span>
           </span>
         </td>
-        <td><DropDown title="Selecione uma cor" :options="options" /></td>
-        <td>
-          <div class="table-input">
-            <input
-              class="base-input"
-              :class="[
-                inputBreed == breed.name || selectedRow == breed.name
-                  ? 'inputIsHover'
-                  : 'inputNotHover',
-              ]"
-              type="text"
-              v-model="rowState.size.value"
-            />
-            <span
-              v-if="selectedRow == breed.name"
-              class="material-symbols-outlined"
-            >
-              border_color
-            </span>
-          </div>
-        </td>
-        <td>
-          <div class="table-input">
-            <input
-              class="base-input"
-              :class="[
-                inputBreed == breed.name || selectedRow == breed.name
-                  ? 'inputIsHover'
-                  : 'inputNotHover',
-              ]"
-              type="text"
-              v-model="rowState.name.value"
-            />
-            <span
-              v-if="selectedRow == breed.name"
-              class="material-symbols-outlined"
-            >
-              border_color
-            </span>
-          </div>
-        </td>
-        <td>
-          <div class="table-input">
-            <input
-              class="base-input"
-              :class="[
-                inputBreed == breed.name || selectedRow == breed.name
-                  ? 'inputIsHover'
-                  : 'inputNotHover',
-              ]"
-              type="text"
-              v-model="rowState.age.value"
-            />
-            <span
-              v-if="selectedRow == breed.name"
-              class="material-symbols-outlined"
-            >
-              border_color
-            </span>
-          </div>
+        <td class="breed-image">
+          <img
+            v-show="selectedRow === breed.name"
+            :src="breedStore.breedImage"
+            height="100"
+          />
         </td>
         <td v-if="selectedRow == breed.name">
           <span
-            @click="
-              saveBreed({
-                breed: breed.name,
-                age: rowState.age.value,
-                name: rowState.name.value,
-                color: rowState.color.value,
-                size: rowState.size.value,
-                Image: rowState.image.value,
-              } as unknown as Dog)
-            "
+            @click="saveBreed({} as unknown as Dog)"
             class="material-symbols-outlined addToCar"
           >
             add_shopping_cart
@@ -189,13 +102,6 @@ const getInputValue = (value: string) => {
 .table-breed thead tr th {
   padding: 10px;
   border-radius: 4px;
-}
-
-.breed-name-container {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .breed-name {
@@ -223,18 +129,6 @@ const getInputValue = (value: string) => {
   border-radius: 4px;
 }
 
-.table-input {
-  display: flex;
-  align-items: center;
-}
-.base-input {
-  height: 20px;
-  border: none;
-  background-color: transparent;
-  caret-color: #e2e3ea;
-  font-size: 16px;
-}
-
 .inputIsHover {
   color: #e2e3ea;
 }
@@ -249,5 +143,10 @@ const getInputValue = (value: string) => {
 
 .addToCar {
   cursor: pointer;
+}
+
+.breed-image {
+  display: flex;
+  justify-content: center;
 }
 </style>
