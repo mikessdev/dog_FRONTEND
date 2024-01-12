@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useBreedStore, type Breed } from "@/stores/breedStore";
-import { reactive, ref } from "vue";
-import useDogStorage from "@/composables/useDogStorage";
-import type { Dog } from "@/interfaces/Dog";
+import { ref } from "vue";
+
+const breedStore = useBreedStore();
 
 const selectedRow = ref<string>("");
 const breedImage = ref<string>("");
-
-const breedStore = useBreedStore();
+const inputBreed = ref<string>("");
 
 const emit = defineEmits(["click"]);
 
@@ -23,7 +22,6 @@ const onClick = (name: string) => {
   loadImageByBreed(name);
 };
 
-const inputBreed = ref<string>("");
 const rowHover = (name: string) => {
   inputBreed.value = name;
 };

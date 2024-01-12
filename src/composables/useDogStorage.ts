@@ -15,32 +15,14 @@ const useDogStorage = () => {
     setCurrentDogs(dogStorage.value);
   };
 
-  const removeDog = (dog: Dog) => {
-    const index = dogStorage.value.findIndex((e) => e.name === dog.name);
-    if (index != -1) {
-      dogStorage.value.splice(index, 1);
-      setCurrentDogs(dogStorage.value);
-    }
-  };
-
   const getAllDogs = () => {
     return dogStorage.value;
   };
 
-  const getDogByBreed = (breed: string) => {
-    return dogStorage.value.filter((dog) => dog.breed === breed);
-  };
-
-  const checkIfDogExist = (breed: string) => {
-    return dogStorage.value.findIndex((e) => e.name === breed);
-  };
   return {
     getAllDogs,
     setCurrentDogs,
     addDog,
-    removeDog,
-    getDogByBreed,
-    checkIfDogExist,
   };
 };
 

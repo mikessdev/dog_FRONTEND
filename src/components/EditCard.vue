@@ -37,17 +37,7 @@ const save = () => {
     size: dogInfoState.size,
   } as Dog;
 
-  const breedAlreadyExist = useDogStorage.checkIfDogExist(dogInfo.breed);
-  console.log(breedAlreadyExist);
-
-  if (breedAlreadyExist) {
-    useDogStorage.addDog(dogInfo);
-  }
-
-  if (!breedAlreadyExist) {
-    useDogStorage.removeDog(dogInfo);
-    useDogStorage.addDog(dogInfo);
-  }
+  useDogStorage.addDog(dogInfo);
 
   emit("save");
 };
